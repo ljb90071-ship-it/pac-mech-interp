@@ -98,9 +98,21 @@ def plot_accuracy_distribution(sweep_results, output_path):
     ax.axhline(y=0.5, color="gray", linestyle=":", linewidth=1.5, label="Random chance")
     ax.set_xticklabels(lam_labels, fontsize=9)
     ax.set_ylabel("Accuracy across Permutations", fontsize=11)
-    ax.set_title("(a) PAC Accuracy Distribution ***", fontsize=12, fontweight="bold")
+    # Title and significance annotation placed separately to avoid overlap
+    ax.set_title("(a) PAC Accuracy Distribution", fontsize=12, fontweight="bold")
+    # Place *** as a separate text annotation to the right of the title, clear of text
+    ax.annotate(
+        "***",
+        xy=(1.0, 1.02),
+        xycoords="axes fraction",
+        fontsize=13,
+        fontweight="bold",
+        color="red",
+        ha="right",
+        va="bottom",
+    )
     ax.set_ylim(0.4, 1.05)
-    ax.legend(fontsize=9)
+    ax.legend(fontsize=9, loc="lower right")
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()
@@ -131,7 +143,16 @@ def plot_accuracy_variance_tradeoff(sweep_results, output_path):
 
     lines1, labels1 = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines1 + lines2, labels1 + labels2, fontsize=9, loc="lower right")
+    # Place legend in upper-left to avoid the Std. Dev. line (which rises then falls
+    # on the right side) from passing through the legend box
+    ax1.legend(
+        lines1 + lines2,
+        labels1 + labels2,
+        fontsize=9,
+        loc="upper left",
+        framealpha=0.9,
+        edgecolor="#cccccc",
+    )
 
     ax1.set_title("(b) Accuracy-Variance Trade-off", fontsize=12, fontweight="bold")
     plt.tight_layout()
